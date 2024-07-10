@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
     // ROUTE FOR ADMIN
     Route::get('admin-dashboard', [AdminDashboardController::class, 'index'])->name('admin-dashboard');
     Route::get('admin-galeri-photo', [AdminPostController::class, 'index'])->name('admin-galeri-photo');
+    Route::get('admin-galeri-photo-create', [AdminPostController::class, 'create'])->name('admin-galeri-photo-create');
 
     // ROUTE FOR USER
     Route::get('user-dashboard', [UserDashboardController::class, 'index'])->name('user-dashboard');
