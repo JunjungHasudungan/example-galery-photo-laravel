@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
+use App\Models\{Post, Photo};
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
 class PostController extends Controller
 {
     /**
@@ -15,7 +16,7 @@ class PostController extends Controller
     {
         return view('admin.posts.index', [
             'pageTitle' => 'Galeri Poto',
-            'posts'     => Post::get(),
+            'posts'     => Post::with('photo')->get(),
         ]);
     }
 
@@ -25,7 +26,7 @@ class PostController extends Controller
     public function create()
     {
         return view('admin.posts.create',[
-            'pageTitle' => 'Tambah Photo'
+            'pageTitle' => 'Tambah Post'
         ]);
     }
 
@@ -34,7 +35,30 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $validated = $request->validate([
+            'title' => 'required|unique:posts|max:255',
+            'description'   => 'required|min:3',
+            'category'  => 'required',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $post = Post::create([
+            'title'         => $validated['title'],
+            'description'   => $validated['description'],
+            'category'      => $validated['category'],
+            'user_id'       => auth()->id()
+        ]);
+
+        if($validated['photo']){
+            $path = $validated['photo']->store('photos', 'public');
+            Photo::create([
+                'post_id'   => $post->id,
+                'path'      => $path
+            ]);
+        }
+
+    return redirect('admin-galeri-photo')->with('status', 'Berhasil ditambahkan..');
     }
 
     /**
@@ -48,24 +72,48 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $postId)
     {
-        //
+        $post = Post::where('id', $postId)->with('photo')->first();
+
+        return view('admin.posts.edit', [
+            'pageTitle' => 'Edit Post',
+            'post'  => $post
+        ]);
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Post $post)
     {
-        //
+
+        $validated = $request->validate([
+            'title' => 'required|unique:posts|max:255',
+            'description'   => 'required|min:3',
+            'category'  => 'required',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        dd($validated);
+        $post->update([
+            'title'             => $validated['title'],
+            'description'       => $validated['description'],
+            'category'          => $validated['category'],
+            'user_id'           => auth()->id()
+        ]);
+
+        return redirect('admin-galeri-photo')->with('status', 'Berhasil diupdate...');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect('admin-galeri-photo')->with('status', 'Berhasil dihapus...');
     }
 }

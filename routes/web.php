@@ -22,8 +22,14 @@ Route::middleware('auth')->group(function () {
 
     // ROUTE FOR ADMIN
     Route::get('admin-dashboard', [AdminDashboardController::class, 'index'])->name('admin-dashboard');
+    Route::resource('galery-photo', AdminPostController::class);
+
     Route::get('admin-galeri-photo', [AdminPostController::class, 'index'])->name('admin-galeri-photo');
     Route::get('admin-galeri-photo-create', [AdminPostController::class, 'create'])->name('admin-galeri-photo-create');
+    Route::get('admin-galeri-photo/{post}', [AdminPostController::class, 'edit'])->name('admin-galeri-photo-edit');
+    Route::put('admin-galeri-photo-update/{post}', [AdminPostController::class, 'update'])->name('admin-galeri-photo-update');
+    Route::delete('admin-galeri-photo-delete/{post}', [AdminPostController::class, 'destroy'])->name('admin-galeri-photo-delete');
+    Route::post('admin-galeri-photo-store', [AdminPostController::class, 'store'])->name('admin-galeri-photo-store');
 
     // ROUTE FOR USER
     Route::get('user-dashboard', [UserDashboardController::class, 'index'])->name('user-dashboard');
