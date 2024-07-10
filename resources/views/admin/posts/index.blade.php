@@ -13,8 +13,13 @@
                                 </a>
                             </button>
                             @if (session('status'))
-                                <div class="alert alert-success">
-                                    {{ session('status') }}
+                                <div    x-data="{ show: true }"
+                                        x-show="show"
+                                        x-transition
+                                        x-init="setTimeout(() => show = false, 2000)">
+                                    <div class="alert alert-success">
+                                        {{ session('status') }}
+                                    </div>
                                 </div>
                             @endif
                         </div>

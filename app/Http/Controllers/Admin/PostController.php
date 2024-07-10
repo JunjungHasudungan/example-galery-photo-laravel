@@ -52,6 +52,7 @@ class PostController extends Controller
 
         if($validated['photo']){
             $path = $validated['photo']->store('photos', 'public');
+            
             Photo::create([
                 'post_id'   => $post->id,
                 'path'      => $path
@@ -72,15 +73,12 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $postId)
+    public function edit(Post $post)
     {
-        $post = Post::where('id', $postId)->with('photo')->first();
-
         return view('admin.posts.edit', [
             'pageTitle' => 'Edit Post',
             'post'  => $post
         ]);
-
     }
 
     /**
@@ -96,13 +94,26 @@ class PostController extends Controller
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        dd($validated);
         $post->update([
             'title'             => $validated['title'],
             'description'       => $validated['description'],
             'category'          => $validated['category'],
             'user_id'           => auth()->id()
         ]);
+
+        if ($validated['photo']) {
+
+            Storage::disk('public')->delete($post->photo->path);
+
+            $path = $validated['photo']->store('photos', 'public');
+
+            $photo = Photo::where('post_id', $post->id)->first();
+
+            $photo->update([
+                'path'  => $path
+            ]);
+
+        }
 
         return redirect('admin-galeri-photo')->with('status', 'Berhasil diupdate...');
     }
