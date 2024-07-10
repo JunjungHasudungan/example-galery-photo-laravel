@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\{
 };
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\{
+    CommentController as UserCommentController,
     Dashboardcontroller as UserDashboardController,
 };
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,8 @@ Route::middleware('auth')->group(function () {
 
     // ROUTE FOR USER
     Route::get('user-dashboard', [UserDashboardController::class, 'index'])->name('user-dashboard');
+
+    Route::get('user-create-comment/{post}', [UserCommentController::class, 'create'])->name('user-create-comment');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
