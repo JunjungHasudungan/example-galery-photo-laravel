@@ -35,8 +35,9 @@ Route::middleware('auth')->group(function () {
     // ROUTE FOR USER
     Route::get('user-dashboard', [UserDashboardController::class, 'index'])->name('user-dashboard');
 
-    Route::get('user-create-comment/{post}', [UserCommentController::class, 'create'])->name('user-create-comment');
-
+    Route::post('user-create-comment/{post}', [UserCommentController::class, 'store'])->name('user-create-comment');
+    Route::post('user-store-like/{post}', [UserCommentController::class, 'storeLike'])->name('user-store-like');
+ 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
