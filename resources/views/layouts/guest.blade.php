@@ -5,7 +5,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>
+            @if (Route::currentRouteName() == 'login')
+                {{ __('Login') }} | {{ config('app.name') }}
+            @elseif (Route::currentRouteName() == 'register')
+            {{ __('Register') }} | {{ config('app.name') }}
+            @else
+                {{ config('app.name', 'Laravel') }}
+            @endif
+        </title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -18,7 +26,15 @@
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
             <div>
                 <a href="/">
-                    <span class="w-20 h-20 fill-current text-gray-500 font-bold"> {{ config('app.name') }} </span>
+                    <span class="w-20 h-20 fill-current text-gray-500 font-bold">
+                        @if (Route::currentRouteName() == 'login')
+                            {{ __('Login') }} - {{ config('app.name') }}
+                        @elseif (Route::currentRouteName() == 'register')
+                            {{ __('Register') }} - {{ config('app.name') }}
+                        @else
+                            {{ config('app.name', 'Laravel') }}
+                        @endif
+                    </span>
                     {{-- <h5 class="w-20 h-20 fill-current text-gray-500 font-bold"> {{ config('app.name') }} </h5> --}}
                 </a>
             </div>
