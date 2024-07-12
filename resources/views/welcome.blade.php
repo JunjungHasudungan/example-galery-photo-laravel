@@ -65,7 +65,7 @@
                                 @forelse ($posts as $post)
                                     <div class="w-full border mb-2  border-gray-200 rounded-lg bg-gray-400 dark:border-gray-700">
                                         <div  class="flex rounded-lg md:flex-row dark:bg-gray-800">
-                                            <img class="object-cover w-24 rounded-t-lg h-24 rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg"alt="">
+                                            <img class="object-cover w-24 rounded-t-lg h-24 rounded-lg"  src="{{ asset('storage/'. $post->photo->path) }}"alt="">
                                             <div class="flex flex-col p-4 leading-normal">
                                                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900"> {{ $post->title }} </h5>
                                                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"> {{ $post->description }} .</p>
@@ -90,7 +90,7 @@
                                                 </button>
                                                 
                                                 <span class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="{{count($post->likes) > 0 ? 'red' : 'none'}}" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
                                                     </svg>
                                                     <span class="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">
