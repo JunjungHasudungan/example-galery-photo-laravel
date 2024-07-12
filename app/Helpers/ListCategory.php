@@ -4,8 +4,9 @@ namespace App\Helpers;
 
 class ListCategory {
     const ListCategories = [
-        'makanan'   => 'Makanan',
+        'makanan'       => 'Makanan',
         'pendidikan'    => 'Pendidikan',
-        'travelling'    => 'Travelling'
+        'travelling'    => 'Travelling',
+        'eleketronik'   => 'Elektronik'
     ];
 }
