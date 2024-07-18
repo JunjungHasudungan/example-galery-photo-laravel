@@ -11,7 +11,10 @@ class Comment extends Model
 
     protected $table = 'comments';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'id', 'post_id', 'user_id'
+    ];
+    // protected $guarded = [];
 
     public function post()
     {

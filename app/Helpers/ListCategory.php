@@ -7,6 +7,6 @@ class ListCategory {
         'makanan'       => 'Makanan',
         'pendidikan'    => 'Pendidikan',
         'travelling'    => 'Travelling',
-        'eleketronik'   => 'Elektronik'
+        'elektronik'   => 'Elektronik'
     ];
 }

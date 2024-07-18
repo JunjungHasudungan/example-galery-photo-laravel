@@ -61,7 +61,7 @@
                                 $posts = \App\Models\Post::with(['photo', 'comments', 'likes'])->get();
                             @endphp
                             <div class="w-fullbg-white rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                            
+
                                 @forelse ($posts as $post)
                                     <div class="w-full border mb-2  border-gray-200 rounded-lg bg-gray-400 dark:border-gray-700">
                                         <div  class="flex rounded-lg md:flex-row dark:bg-gray-800">
@@ -80,24 +80,25 @@
                                                 <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3"> {{ $post->category }} </span>
                                             </div>
                                             <div class="flex items-center gap-2">
-                                                <button type="button" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
-                                                      </svg>
-                                                    <span class="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">
-                                                    {{ count($post->comments) }}
-                                                    </span>
-                                                </button>
-                                                
-                                                <span class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="{{count($post->likes) > 0 ? 'red' : 'none'}}" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                                                    </svg>
-                                                    <span class="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">
-                                                    {{ count($post->likes) }}
-                                                    </span>
-                                                </span>
-                                                
+                                                @if (!auth()->user())
+                                                    <a href="{{ route('user-dashboard') }}" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
+                                                        </svg>
+                                                        <span class="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">
+                                                        {{ count($post->comments) }}
+                                                        </span>
+                                                    </a>
+
+                                                    <a href="{{ route('user-dashboard') }}" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="{{count($post->likes) > 0 ? 'red' : 'none'}}" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                                                        </svg>
+                                                        <span class="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">
+                                                        {{ count($post->likes) }}
+                                                        </span>
+                                                    </a>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -108,7 +109,7 @@
                                         </svg>
                                         <span class="sr-only">Info</span>
                                         <div>
-                                        <span class="font-medium">Galeri Photo belum tersedia!</span> 
+                                        <span class="font-medium">Galeri Photo belum tersedia!</span>
                                         </div>
                                     </div>
                                 @endforelse

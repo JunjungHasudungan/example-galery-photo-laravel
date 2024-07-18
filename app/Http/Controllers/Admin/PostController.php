@@ -30,6 +30,11 @@ class PostController extends Controller
         ]);
     }
 
+    public function cancel()
+    {
+        return redirect('admin-galeri-photo');
+    }
+
     /**
      * Store a newly created resource in storage.
      */

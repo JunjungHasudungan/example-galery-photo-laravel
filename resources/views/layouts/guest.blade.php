@@ -28,9 +28,9 @@
                 <a href="/">
                     <span class="w-20 h-20 fill-current text-gray-500 font-bold">
                         @if (Route::currentRouteName() == 'login')
-                            {{ __('Login') }} - {{ config('app.name') }}
+                            {{ __('Login') }} | {{ config('app.name') }}
                         @elseif (Route::currentRouteName() == 'register')
-                            {{ __('Register') }} - {{ config('app.name') }}
+                            {{ __('Register') }} | {{ config('app.name') }}
                         @else
                             {{ config('app.name', 'Laravel') }}
                         @endif

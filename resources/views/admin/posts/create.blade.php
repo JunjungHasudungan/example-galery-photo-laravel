@@ -5,7 +5,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                   
+
                     <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                         <!-- Modal body -->
                         <form method="POST" action="{{ route('admin-galeri-photo-store') }}" enctype="multipart/form-data"
@@ -34,19 +34,24 @@
                                 </div>
                                 <div class="col-span-2">
                                     <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Description</label>
-                                    <textarea 
-                                            id="description" 
+                                    <textarea
+                                            id="description"
                                             rows="4"
-                                            name="description" 
-                                            class="block p-2.5 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                                            name="description"
+                                            class="block p-2.5 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             placeholder="Write product description here">
                                         </textarea>
-                                        <x-input-error :messages="$errors->get('description')" class="mt-2" />               
+                                        <x-input-error :messages="$errors->get('description')" class="mt-2" />
                                 </div>
                             </div>
                             <div class="flex items-center gap-4">
                                 <x-primary-button>{{ __('Save') }}</x-primary-button>
-                    
+                                <x-secondary-button onclick="return confirm('Are you sure you want to cancel ?')">
+                                    <a href="{{ route('admin-galeri-photo-cancel-create') }}">
+                                        {{ __('Cancel') }}
+                                    </a>
+                                </x-secondary-button>
+
                                 @if (session('status') === 'password-updated')
                                     <p
                                         x-data="{ show: true }"
@@ -59,7 +64,7 @@
                             </div>
                         </form>
                     </div>
-  
+
                 </div>
             </div>
         </div>
