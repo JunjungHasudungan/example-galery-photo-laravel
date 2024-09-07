@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title> {{ config('app.name') }} </title>
+        <title> {{  config('app.name') }} </title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -60,7 +60,7 @@
                             @php
                                 $posts = \App\Models\Post::with(['photo', 'comments', 'likes'])->get();
                             @endphp
-                            <div class="w-fullbg-white rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                            <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
                                 @forelse ($posts as $post)
                                     <div class="w-full border mb-2  border-gray-200 rounded-lg bg-gray-400 dark:border-gray-700">

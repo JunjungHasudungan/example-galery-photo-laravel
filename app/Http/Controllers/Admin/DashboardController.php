@@ -9,15 +9,15 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public 
-        $post_comment_makanan, 
-        $post_comment_pendidikan,
-        $post_comment_travelling,
-        $post_comment_eleketronik,
-        $post_like_makanan,
-        $post_like_pendidikan,
-        $post_like_travelling,
-        $post_like_elektronik;
+    // public
+    //     $post_comment_makanan,
+    //     $post_comment_pendidikan,
+    //     $post_comment_travelling,
+    //     $post_comment_eleketronik,
+    //     $post_like_makanan,
+    //     $post_like_pendidikan,
+    //     $post_like_travelling,
+    //     $post_like_elektronik;
 
     public function index()
     {

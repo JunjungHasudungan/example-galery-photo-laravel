@@ -28,9 +28,10 @@ Route::middleware('auth')->group(function () {
     Route::get('admin-galeri-photo', [AdminPostController::class, 'index'])->name('admin-galeri-photo');
     Route::get('admin-galeri-photo-create', [AdminPostController::class, 'create'])->name('admin-galeri-photo-create');
     Route::get('admin-galeri-photo-cancel-create', [AdminPostController::class, 'cancel'])->name('admin-galeri-photo-cancel-create');
-    Route::get('admin-galeri-photo/{post}', [AdminPostController::class, 'edit'])->name('admin-galeri-photo-edit');
+    Route::get('admin-galeri-photo-edit/{post}', [AdminPostController::class, 'edit'])->name('admin-galeri-photo-edit');
     Route::put('admin-galeri-photo-update/{post}', [AdminPostController::class, 'update'])->name('admin-galeri-photo-update');
     Route::delete('admin-galeri-photo-delete/{post}', [AdminPostController::class, 'destroy'])->name('admin-galeri-photo-delete');
+    Route::get('admin-galeri-photo-view/{post}', [AdminPostController::class, 'show'])->name('admin-galeri-photo-view');
     Route::post('admin-galeri-photo-store', [AdminPostController::class, 'store'])->name('admin-galeri-photo-store');
 
     // ROUTE FOR USER

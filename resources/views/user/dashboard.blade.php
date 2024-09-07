@@ -31,8 +31,8 @@
                         <div class="w-full mb-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                             <div>
                                 <a href="#" class="flex flex-col bg-white rounded-lg shadow md:flex-row hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700">
-                                    <div class=" flex vu  uh-24 w-24">
-                                        <img class="object-cover w-full rounded-t-lg md:rounded-none md:rounded-s-lg" src="{{ asset('storage/'. $post->photo->path) }}" alt="">
+                                    <div class="h-24 w-24">
+                                        <img class="object-cover w-full rounded-t-lg  md:rounded-none md:rounded-s-lg" src="{{ asset('storage/'. $post->photo->path) }}" alt="">
                                     </div>
                                     <div class="flex flex-col p-4 leading-normal">
                                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"> {{ $post->title }} </h5>

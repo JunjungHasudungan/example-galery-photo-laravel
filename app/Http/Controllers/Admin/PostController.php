@@ -5,13 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\{Post, Photo};
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return view('admin.posts.index', [
@@ -20,9 +18,6 @@ class PostController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.posts.create',[
@@ -40,28 +35,39 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-
         $validated = $request->validate([
             'title' => 'required|unique:posts|max:255',
             'description'   => 'required|min:3',
             'category'  => 'required',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photos' => 'required',
+            'photos.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ], [
+            'title.required'            => 'Judul Album Galeri Photo wajib diisi..',
+            'description.required'      => 'Keterangan Album Galeri Photo wajib diisi..',
+            'photos.required'            => 'Photo Album Galeri Photo wajib diisi..',
         ]);
 
         $post = Post::create([
             'title'         => $validated['title'],
             'description'   => $validated['description'],
             'category'      => $validated['category'],
-            'user_id'       => auth()->id()
+            'user_id'       => Auth::user()->id
         ]);
 
-        if($validated['photo']){
-            $path = $validated['photo']->store('photos', 'public');
-            
-            Photo::create([
-                'post_id'   => $post->id,
-                'path'      => $path
-            ]);
+
+        if ($validated['photos']) {
+            foreach ($request->file('photos') as $file) {
+                // Pastikan ada file yang diupload
+                if ($file->isValid()) {
+                    $path = $file->store('photos', 'public'); // Menyimpan file dan mendapatkan path
+                    
+                    // Menyimpan informasi file ke database
+                    Photo::create([
+                        'post_id' => $post->id,
+                        'path' => $path
+                    ]);
+                }
+            }
         }
 
     return redirect('admin-galeri-photo')->with('status', 'Berhasil ditambahkan..');
@@ -70,9 +76,16 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $idPost)
     {
-        //
+
+        $post = Post::findOrFail($idPost);
+
+        $album = Post::where('id', $post->id)->with('photo')->first();
+        return view('admin.posts.show',[
+            'pageTitle' =>'Show list album',
+            'album'     => $album
+        ]);
     }
 
     /**
@@ -103,7 +116,7 @@ class PostController extends Controller
             'title'             => $validated['title'],
             'description'       => $validated['description'],
             'category'          => $validated['category'],
-            'user_id'           => auth()->id()
+            'user_id'           => Auth::user()->id
         ]);
 
         if ($validated['photo']) {
