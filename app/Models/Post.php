@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
@@ -31,5 +32,15 @@ class Post extends Model
     public function likes()
     {
         return $this->hasMany(Like::class);
+    }
+
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = $value;
+
+        // Set slug hanya jika belum ada atau title berubah
+        if (!isset($this->attributes['slug']) || $this->attributes['title'] !== $value) {
+            $this->attributes['slug'] = Str::slug($value);
+        }
     }
 }

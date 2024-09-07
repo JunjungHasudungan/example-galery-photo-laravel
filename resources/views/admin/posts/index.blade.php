@@ -38,10 +38,11 @@
                                         </button>
                                     </x-slot>
                                     <x-slot name="content">
-                                        <x-dropdown-link href="{{ route('admin-galeri-photo-edit', ['post' => $post->id])}}">
+                                        <x-dropdown-link href="{{ route('admin-galeri-photo-edit', ['post' => $post->slug])}}">
                                             {{ __('Edit') }}
                                         </x-dropdown-link>
-                                        <x-dropdown-link href="{{route('admin-galeri-photo-view', ['post' => $post->id] ) }}">
+                                        {{-- ['post' => $post->slug] --}}
+                                        <x-dropdown-link href="{{route('admin-galeri-photo-view', ['post' => $post->slug] ) }}">
                                             {{ __('View') }}
                                         </x-dropdown-link>
                                         <form method="POST" action="{{ route('admin-galeri-photo-delete', $post) }}">

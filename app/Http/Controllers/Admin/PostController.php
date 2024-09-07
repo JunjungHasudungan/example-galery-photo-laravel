@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 class PostController extends Controller
 {
     public function index()
@@ -51,6 +52,7 @@ class PostController extends Controller
             'title'         => $validated['title'],
             'description'   => $validated['description'],
             'category'      => $validated['category'],
+            'slug'          => Str::slug($validated['title']),
             'user_id'       => Auth::user()->id
         ]);
 
@@ -60,7 +62,7 @@ class PostController extends Controller
                 // Pastikan ada file yang diupload
                 if ($file->isValid()) {
                     $path = $file->store('photos', 'public'); // Menyimpan file dan mendapatkan path
-                    
+
                     // Menyimpan informasi file ke database
                     Photo::create([
                         'post_id' => $post->id,
@@ -76,10 +78,10 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $idPost)
+    public function show(string $slug)
     {
 
-        $post = Post::findOrFail($idPost);
+        $post = Post::where('slug', $slug)->firstOrFail();
 
         $album = Post::where('id', $post->id)->with('photo')->first();
         return view('admin.posts.show',[
@@ -91,8 +93,12 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $post)
+    public function edit(string $slug)
     {
+        $album = Post::where('slug', $slug)->firstOrFail();
+
+        $post = Post::where('id', $album->id)->with('photo')->first();
+
         return view('admin.posts.edit', [
             'pageTitle' => 'Edit Post',
             'post'  => $post
