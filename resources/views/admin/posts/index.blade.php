@@ -45,10 +45,19 @@
                                         <x-dropdown-link href="{{route('admin-galeri-photo-view', ['post' => $post->slug] ) }}">
                                             {{ __('View') }}
                                         </x-dropdown-link>
+                                        {{-- <x-dropdown-link onclick="return confirm('yakin untuk menghapus?')">
+                                            <a href="{{ route('admin-galeri-photo-delete', ['post'=> $post->id]) }}">
+                                                {{ __('Delete') }}
+                                            </a>
+                                        </x-dropdown-link> --}}
                                         <form method="POST" action="{{ route('admin-galeri-photo-delete', $post) }}">
                                             @csrf
                                             @method('delete')
-                                            <x-dropdown-link :href="route('admin-galeri-photo-delete', $post)" onclick="event.preventDefault(); this.closest('form').submit();">
+                                            <x-dropdown-link href="#"
+                                                onclick="event.preventDefault();
+                                                if (confirm('Yakin untuk menghapus?')) {
+                                                    this.closest('form').submit();
+                                                }">
                                                 {{ __('Delete') }}
                                             </x-dropdown-link>
                                         </form>
