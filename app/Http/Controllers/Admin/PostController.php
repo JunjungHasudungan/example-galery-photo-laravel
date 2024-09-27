@@ -36,43 +36,119 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|unique:posts|max:255',
-            'description'   => 'required|min:3',
-            'category'  => 'required',
-            'photos' => 'required',
-            'photos.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ], [
-            'title.required'            => 'Judul Album Galeri Photo wajib diisi..',
-            'description.required'      => 'Keterangan Album Galeri Photo wajib diisi..',
-            'photos.required'            => 'Photo Album Galeri Photo wajib diisi..',
-        ]);
+        // try {
+        //     $validated = $request->validate([
+        //         'title' => 'required|unique:posts|max:255',
+        //         'description'   => 'required|min:3',
+        //         'category'  => 'required',
+        //         'photos' => 'required',
+        //         'photos.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        //     ], [
+        //         'title.required'            => 'Judul Album Galeri Photo wajib diisi..',
+        //         'description.required'      => 'Keterangan Album Galeri Photo wajib diisi..',
+        //         'photos.required'            => 'Photo Album Galeri Photo wajib diisi..',
+        //     ]);
 
-        $post = Post::create([
-            'title'         => $validated['title'],
-            'description'   => $validated['description'],
-            'category'      => $validated['category'],
-            'slug'          => Str::slug($validated['title']),
-            'user_id'       => Auth::user()->id
-        ]);
+        //     $post = Post::create([
+        //         'title'         => $validated['title'],
+        //         'description'   => $validated['description'],
+        //         'category'      => $validated['category'],
+        //         'slug'          => Str::slug($validated['title']),
+        //         'user_id'       => Auth::user()->id
+        //     ]);
 
+        //     if ($validated['photos']) {
+        //         foreach ($request->file('photos') as $file) {
+        //             if ($file->isValid()) {
+        //                 $path = $file->store('photos', 'public'); // Menyimpan file dan mendapatkan path
 
-        if ($validated['photos']) {
-            foreach ($request->file('photos') as $file) {
-                // Pastikan ada file yang diupload
-                if ($file->isValid()) {
-                    $path = $file->store('photos', 'public'); // Menyimpan file dan mendapatkan path
+        //                 // Menyimpan informasi file ke database
+        //                 Photo::create([
+        //                     'post_id' => $post->id,
+        //                     'path' => $path
+        //                 ]);
+        //             }
+        //         }
+        //     }
 
-                    // Menyimpan informasi file ke database
-                    Photo::create([
-                        'post_id' => $post->id,
-                        'path' => $path
-                    ]);
+        // } catch (\Exception  $e) {
+        //     return response()->json([
+        //         'status' => 'false',
+        //         'message' => 'Gagal menyimpan data: ' . $e->getMessage(),
+        //     ]);
+        // }
+
+        // return response()->json([
+        //     'status' => 'success',
+        //     'message' => 'Data berhasil disimpan!',
+        //     'data' => $post
+        // ]);
+
+        try {
+            // Lakukan validasi
+            $validated = $request->validate([
+                'title' => 'required|unique:posts|max:255',
+                'description' => 'required|min:3',
+                'category' => 'required',
+                'photos' => 'required',
+                'photos.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ], [
+                'title.required' => 'Judul Album Galeri Photo wajib diisi..',
+                'description.required' => 'Keterangan Album Galeri Photo wajib diisi..',
+                'category.required' => 'Keterangan Album Galeri Photo wajib diisi..',
+                'photos.required' => 'Photo Album Galeri Photo wajib diisi..',
+            ]);
+
+            // Simpan data ke tabel 'posts'
+            $post = Post::create([
+                'title' => $validated['title'],
+                'description' => $validated['description'],
+                'category' => $validated['category'],
+                'slug' => Str::slug($validated['title']),
+                'user_id' => Auth::user()->id,
+            ]);
+
+            // Jika ada foto, simpan file dan informasi ke tabel 'photos'
+            if ($validated['photos']) {
+                foreach ($request->file('photos') as $file) {
+                    if ($file->isValid()) {
+                        $path = $file->store('photos', 'public'); // Menyimpan file ke penyimpanan 'public'
+
+                        // Simpan informasi file ke tabel 'photos'
+                        Photo::create([
+                            'post_id' => $post->id,
+                            'path' => $path,
+                        ]);
+                    }
                 }
             }
+
+            // Kirim respons sukses ke Vue
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data berhasil disimpan!',
+                'data' => $post
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Jika validasi gagal, kirim response error dengan pesan error
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validasi gagal!',
+                'errors' => $e->errors()
+            ], 422); // Status code 422 untuk unprocessable entity
+
+        } catch (\Exception $e) {
+            // Jika terjadi error lain, kirim response error umum
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal menyimpan data: ' . $e->getMessage(),
+            ], 500); // Status code 500 untuk server error
         }
 
-    return redirect('admin-galeri-photo')->with('status', 'Berhasil ditambahkan..');
+
+    // return redirect('admin-galeri-photo')->with('status', 'Berhasil ditambahkan..');
+
     }
 
     /**
